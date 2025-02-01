@@ -88,10 +88,22 @@ All cache durations can be customized during initialization.
 
 ### Subscription Handling
 
-Automatically respects WaniKani's subscription restrictions:
+Provides functions to respect WaniKani's subscription restrictions:
 - Validates content access based on subscription level
 - Handles free, recurring, and lifetime subscriptions
 - Prevents access to content beyond subscription level
+
+```typescript
+// Check if user can access specific level content
+const canAccessLevel60 = await api.isContentAccessible(60);
+if (canAccessLevel60) {
+	// User has access to level 60 content
+	const level60Subjects = await api.subjects.getAll({ levels: [60] });
+} else {
+	// User's subscription doesn't include level 60
+	console.log('Upgrade your subscription to access level 60 content');
+}
+```
 
 ## Environment Variables
 
@@ -101,15 +113,10 @@ Automatically respects WaniKani's subscription restrictions:
 
 For detailed API documentation, see:
 - [WaniKani API Documentation](https://docs.api.wanikani.com/20170710)
-- [API Reference](https://docs.api.wanikani.com/20170710/#introduction)
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-MIT
 
 ## Acknowledgments
 
