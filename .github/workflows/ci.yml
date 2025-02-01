@@ -43,9 +43,8 @@ jobs:
       run: |
         VERSION=$(node -p "require('./package.json').version")
         LICENSE=$(node -p "require('./package.json').license")
-        mkdir -p ./badges
-        echo '{"schemaVersion":1,"label":"version","message":"'$VERSION'","color":"blue"}' > ./badges/wanikani-api-version.json
-        echo '{"schemaVersion":1,"label":"license","message":"'$LICENSE'","color":"yellow"}' > ./badges/wanikani-api-license.json
+        echo '{"schemaVersion":1,"label":"version","message":"'$VERSION'","color":"blue"}' > wanikani-api-version.json
+        echo '{"schemaVersion":1,"label":"license","message":"'$LICENSE'","color":"yellow"}' > wanikani-api-license.json
 
     - name: Generate Badges
       uses: gaelgirodon/ci-badges-action@v1
