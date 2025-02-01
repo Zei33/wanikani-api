@@ -1,9 +1,9 @@
 {
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "jest.config.ts"],
 	"compilerOptions": {
 		"target": "es2022",
 		"module": "nodenext",
-		"rootDir": "./src",
+		"rootDir": ".",
 		"moduleResolution": "nodenext",
 		"resolveJsonModule": true,
 		"baseUrl": "./",

@@ -111,13 +111,13 @@ export class WaniKaniRequest {
 			body: options.body,
 		};
 
-		const apiTrimLength = 8;
+		const apiKeyTrimLength = 8;
 
 		const uniqueString = JSON.stringify({
 			endpoint: urlObj.pathname,
 			params: searchParams,
 			options: relevantOptions,
-			apiKeyHash: crypto.createHash('sha256').update(this.apiKey).digest('hex').slice(0, apiTrimLength)
+			apiKeyHash: crypto.createHash('sha256').update(this.apiKey).digest('hex').slice(0, apiKeyTrimLength)
 		});
 
 		return crypto.createHash('md5').update(uniqueString).digest('hex');
@@ -240,11 +240,11 @@ export class WaniKaniRequest {
 	 */
 	public async cleanOldCaches(maxAge: number): Promise<void> {
 		try {
-			const files = await fs.readdir(this.cacheDir);
-			const jsonFiles = files.filter(file => file.endsWith('.json'));
+			const files = await fs.readdir(this.cacheDir, { withFileTypes: true });
+			const jsonFiles = files.filter(file => file.isFile() && file.name.endsWith('.json'));
 			await Promise.all(
 				jsonFiles.map(async (file) => {
-					await WaniKaniRequest.cleanCacheFile(path.join(this.cacheDir, file), maxAge);
+					await WaniKaniRequest.cleanCacheFile(path.join(this.cacheDir, file.name), maxAge);
 				})
 			);
 		} catch (error) {
@@ -295,7 +295,10 @@ export class WaniKaniRequest {
 	 * @throws {Error} If response is not ok or has invalid format
 	 */
 	private static async handleResponse<T>(response: Response, cached: CacheData<T> | null): Promise<T> {
-		if (response.status === WaniKaniHttpStatus.NOT_MODIFIED && cached !== null) {
+		if (response.status === WaniKaniHttpStatus.NOT_MODIFIED) {
+			if (cached === null) {
+				throw new Error('Cache miss on 304 response');
+			}
 			return cached.data;
 		}
 

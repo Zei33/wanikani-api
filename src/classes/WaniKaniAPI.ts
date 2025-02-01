@@ -190,8 +190,15 @@ export class WaniKaniAPI {
 	 * @returns {Promise<boolean>} Promise resolving to whether the content should be accessible
 	 */
 	public async isContentAccessible(level: number): Promise<boolean> {
-		const user = await this.user.get();
-		return level <= user.data.data.subscription.max_level_granted;
+		if (!Number.isInteger(level) || level <= 0) {
+			throw new Error('Level must be a positive integer');
+		}
+		interface UserResponse { data: { data: { subscription: { max_level_granted: number } | null } } }
+		const { data: { data: { subscription } } } = await this.user.get() as UserResponse;
+		if (subscription === null) {
+			return false;
+		}
+		return level <= subscription.max_level_granted;
 	}
 }
 
