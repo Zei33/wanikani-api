@@ -1,6 +1,10 @@
 # WaniKani API Client
 
-![example workflow](https://github.com/Zei33/wanikani-api/actions/workflows/ci.yml/badge.svg)
+[![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Zei33/ea274423cad68ec583a39cd12d8f9441/raw/wanikani-api-version.json)](https://github.com/Zei33/wanikani-api/releases)
+[![License](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Zei33/ea274423cad68ec583a39cd12d8f9441/raw/wanikani-api-license.json)](https://github.com/Zei33/wanikani-api/blob/main/LICENSE.md)
+[![Build](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Zei33/ea274423cad68ec583a39cd12d8f9441/raw/wanikani-api-build.json)](https://github.com/Zei33/wanikani-api/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Zei33/ea274423cad68ec583a39cd12d8f9441/raw/wanikani-api-junit-tests.json)](https://github.com/Zei33/wanikani-api/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Zei33/ea274423cad68ec583a39cd12d8f9441/raw/wanikani-api-coverage.json)](https://github.com/Zei33/wanikani-api/actions/workflows/ci.yml)
 
 A modern TypeScript client for the WaniKani API v2, featuring automatic caching, type safety, and comprehensive endpoint coverage.
 
