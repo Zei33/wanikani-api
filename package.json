@@ -10,7 +10,7 @@
     "build": "tsc -p .",
     "start": "npm run build && node ./dist/index.js",
     "postinstall": "npm run build",
-    "test": "jest --reporters=default --reporters=jest-junit --coverage",
+    "test": "jest --reporters=default --reporters=jest-junit --coverage --coverageReporters=cobertura",
     "test:live": "jest -c jest.live.config.ts",
     "test:all": "jest -c jest.all.config.ts"
   },
