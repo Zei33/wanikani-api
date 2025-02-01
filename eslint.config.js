@@ -4,8 +4,8 @@ import standard from "eslint-config-love";
 export default [
 	{
 		...standard,
-		files: ["**/*.{js,mjs,cjs,ts}"],
-		ignores: ["**/dist/**", "eslint.config.js", "src/__tests__/**", "jest*.ts", "jest*.js", "**/*.d.ts"],
+		files: ["**/*.{js,mjs,cjs,ts}", "!**/*.d.ts"],
+		ignores: ["**/dist/**", "eslint.config.js", "src/__tests__/**", "jest*.ts", "jest*.js"],
 		languageOptions: {
 			...standard.languageOptions,
 			parserOptions: {

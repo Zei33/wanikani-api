@@ -26,13 +26,13 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
+    - name: Build
+      run: npm run build
+    
     - name: Run linting
       run: npm run lint
     
     - name: Run tests
       run: npm test
       env:
-        CI: true
-    
-    - name: Build
-      run: npm run build 
+        CI: true 
