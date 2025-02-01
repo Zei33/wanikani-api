@@ -18,15 +18,23 @@ export default [
 		},
 		rules: {
 			...standard.rules,
-			//"@typescript-eslint/no-magic-numbers": "off",
-			//"no-magic-numbers": "off",
+			"@typescript-eslint/no-magic-numbers": ["error", { "ignore": [-1, 0, 1, 24, 60, 1000, 3600000, 86400000], ignoreDefaultValues: true, ignoreArrayIndexes: true } ],
+			"no-magic-numbers": "off", // Must be off for compatibility with ts rules.
 			"no-mixed-spaces-and-tabs": "error",
+			"no-console": "off",
+			"@typescript-eslint/no-console": "off",
 			//"@typescript-eslint/ban-ts-comment": "off",
 			//"ban-ts-comment": "off",
 			"indent": ["error", "tab", { "MemberExpression": 0 }],
 			//"prefer-destructuring": "off",
 			//"@typescript-eslint/prefer-destructuring": "off",
 			"complexity": ["error", 6]
+		}
+	},
+	{
+		files: ["**/constants/**/*.{js,ts}"],
+		rules: {
+			"@typescript-eslint/no-magic-numbers": "off"
 		}
 	}
 ];
