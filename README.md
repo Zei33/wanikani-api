@@ -1,6 +1,6 @@
 # WaniKani API Client
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Zei33/wanikani-api/CI?label=build)
+![example workflow](https://github.com/Zei33/wanikani-api/actions/workflows/ci.yml/badge.svg)
 
 A modern TypeScript client for the WaniKani API v2, featuring automatic caching, type safety, and comprehensive endpoint coverage.
 
