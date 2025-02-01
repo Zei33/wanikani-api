@@ -33,11 +33,12 @@ jobs:
       run: npm run lint
     
     - name: Run tests with coverage
-      run: npm test
+      run: npm run test:all
       env:
         CI: true
         JEST_JUNIT_OUTPUT_DIR: ./reports/
         JEST_JUNIT_OUTPUT_NAME: junit.xml
+        WANIKANI_API_KEY: ${{ secrets.WANIKANI_API_KEY }}
 
     - name: Update Version and License Badges
       run: |
