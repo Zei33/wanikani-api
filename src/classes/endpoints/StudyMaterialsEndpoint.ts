@@ -2,7 +2,7 @@ import type { ApiResponse, StudyMaterial } from "../../types/wanikani.js";
 import { Endpoint } from "../base/Endpoint.js";
 
 /**
- * Handles study materials-related API endpoints
+ * Handles study material-related API endpoints
  * @see {@link https://docs.api.wanikani.com/20170710/#study-materials Study Materials API Documentation}
  * @extends {Endpoint}
  */
@@ -28,7 +28,7 @@ export class StudyMaterialsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"study_materials",
 			{},
-			60 * 60, // Cache for 1 hour as they update moderately often
+			"studyMaterials",
 			options.updatedAfter
 		);
 	}
@@ -48,7 +48,7 @@ export class StudyMaterialsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`study_materials/${id}`,
 			{},
-			60 * 60 // Cache for 1 hour
+			"studyMaterials"
 		);
 	}
 
@@ -72,24 +72,13 @@ export class StudyMaterialsEndpoint extends Endpoint {
 	 * });
 	 * ```
 	 */
-	public async create(data: {
-		subjectId: number;
-		meaningNote?: string;
-		readingNote?: string;
-		meaningSynonyms?: string[];
-	}): Promise<StudyMaterial> {
+	public async create(data: StudyMaterial): Promise<StudyMaterial> {
 		return await this.makeRequest(
 			"study_materials",
 			{
 				method: "POST",
-				body: JSON.stringify({
-					subject_id: data.subjectId,
-					meaning_note: data.meaningNote,
-					reading_note: data.readingNote,
-					meaning_synonyms: data.meaningSynonyms
-				})
-			},
-			0 // Don't cache POST requests
+				body: JSON.stringify(data)
+			}
 		);
 	}
 
@@ -111,22 +100,13 @@ export class StudyMaterialsEndpoint extends Endpoint {
 	 * });
 	 * ```
 	 */
-	public async update(id: number, data: {
-		meaningNote?: string;
-		readingNote?: string;
-		meaningSynonyms?: string[];
-	}): Promise<StudyMaterial> {
+	public async update(id: number, data: Partial<StudyMaterial>): Promise<StudyMaterial> {
 		return await this.makeRequest(
 			`study_materials/${id}`,
 			{
 				method: "PUT",
-				body: JSON.stringify({
-					meaning_note: data.meaningNote,
-					reading_note: data.readingNote,
-					meaning_synonyms: data.meaningSynonyms
-				})
-			},
-			0 // Don't cache PUT requests
+				body: JSON.stringify(data)
+			}
 		);
 	}
 } 

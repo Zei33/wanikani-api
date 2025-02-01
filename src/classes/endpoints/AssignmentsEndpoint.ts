@@ -28,7 +28,7 @@ export class AssignmentsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"assignments",
 			{},
-			Endpoint.DEFAULT_TTL,
+			"assignments",
 			options.updatedAfter
 		);
 	}
@@ -48,7 +48,7 @@ export class AssignmentsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`assignments/${id}`,
 			{},
-			Endpoint.DEFAULT_TTL
+			"assignments"
 		);
 	}
 
@@ -73,8 +73,7 @@ export class AssignmentsEndpoint extends Endpoint {
 			{
 				method: "PUT",
 				body: JSON.stringify({ started_at: startedAt.toISOString() })
-			},
-			0 // Don't cache PUT requests
+			}
 		);
 	}
 } 

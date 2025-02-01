@@ -28,7 +28,7 @@ export class ReviewsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"reviews",
 			{},
-			24 * 60 * 60, // Cache for 24 hours as reviews never change once recorded
+			"reviews",
 			options.updatedAfter
 		);
 	}
@@ -48,7 +48,7 @@ export class ReviewsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`reviews/${id}`,
 			{},
-			24 * 60 * 60 // Cache for 24 hours
+			"reviews"
 		);
 	}
 
@@ -70,22 +70,13 @@ export class ReviewsEndpoint extends Endpoint {
 	 * });
 	 * ```
 	 */
-	public async create(data: {
-		subjectId: number;
-		incorrectMeaningAnswers: number;
-		incorrectReadingAnswers: number;
-	}): Promise<Review> {
+	public async create(data: Review): Promise<Review> {
 		return await this.makeRequest(
 			"reviews",
 			{
 				method: "POST",
-				body: JSON.stringify({
-					subject_id: data.subjectId,
-					incorrect_meaning_answers: data.incorrectMeaningAnswers,
-					incorrect_reading_answers: data.incorrectReadingAnswers
-				})
-			},
-			0 // Don't cache POST requests
+				body: JSON.stringify(data)
+			}
 		);
 	}
 } 

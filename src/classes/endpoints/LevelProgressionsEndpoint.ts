@@ -29,7 +29,7 @@ export class LevelProgressionsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"level_progressions",
 			{},
-			60 * 60, // Cache for 1 hour as they update when levels change
+			"levelProgressions",
 			options.updatedAfter
 		);
 	}
@@ -49,7 +49,7 @@ export class LevelProgressionsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`level_progressions/${id}`,
 			{},
-			60 * 60 // Cache for 1 hour
+			"levelProgressions"
 		);
 	}
 } 

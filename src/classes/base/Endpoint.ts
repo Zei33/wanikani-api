@@ -1,4 +1,5 @@
 import type { WaniKaniRequest } from "../WaniKaniRequest.js";
+import type { CacheTTLConfig } from "../../types/request.js";
 
 /**
  * Base class for all WaniKani API endpoints
@@ -13,12 +14,17 @@ export abstract class Endpoint {
 	/** Request handler for making API calls */
 	protected readonly request: WaniKaniRequest;
 
+	/** Cache TTL configuration */
+	protected readonly cacheTTL: CacheTTLConfig;
+
 	/**
 	 * Creates a new endpoint instance
 	 * @param {WaniKaniRequest} request - The request handler to use for API calls
+	 * @param {CacheTTLConfig} [cacheTTL={}] - Optional cache TTL configuration
 	 */
-	constructor(request: WaniKaniRequest) {
+	constructor(request: WaniKaniRequest, cacheTTL: CacheTTLConfig = {}) {
 		this.request = request;
+		this.cacheTTL = cacheTTL;
 	}
 
 	/**
@@ -28,20 +34,30 @@ export abstract class Endpoint {
 	protected static readonly LONG_TTL = 86400000;
 
 	/**
+	 * Gets the cache TTL for a specific endpoint
+	 * @param {keyof CacheTTLConfig} endpoint - The endpoint to get TTL for
+	 * @returns {number} The TTL in seconds
+	 */
+	protected getCacheTTL(endpoint: keyof CacheTTLConfig): number {
+		return (this.cacheTTL[endpoint] ?? this.cacheTTL.default ?? Endpoint.DEFAULT_TTL) * 1000;
+	}
+
+	/**
 	 * Makes a request to the WaniKani API
 	 * @template T - The expected response data type
 	 * @param {string} endpoint - The API endpoint to request
 	 * @param {Record<string, unknown>} [params={}] - Optional query parameters
-	 * @param {number} [cacheTTL=Endpoint.DEFAULT_TTL] - How long to cache the response (in seconds)
+	 * @param {keyof CacheTTLConfig} [ttlKey] - Key to use for cache TTL lookup
 	 * @param {Date} [updatedAfter] - Only fetch resources updated after this date
 	 * @returns {Promise<T>} Promise resolving to the response data
 	 */
 	protected async makeRequest<T>(
 		endpoint: string,
 		params: Record<string, unknown> = {},
-		cacheTTL = Endpoint.DEFAULT_TTL,
+		ttlKey?: keyof CacheTTLConfig,
 		updatedAfter?: Date
 	): Promise<T> {
-		return await this.request.request<T>(endpoint, params, cacheTTL * 1000, updatedAfter);
+		const ttl = ttlKey !== undefined ? this.getCacheTTL(ttlKey) : 0;
+		return await this.request.request<T>(endpoint, params, ttl, updatedAfter);
 	}
 } 

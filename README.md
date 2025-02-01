@@ -22,10 +22,19 @@ npm install wanikani-api
 ```typescript
 import { WaniKaniAPI } from 'wanikani-api';
 
-// Initialize with API key
+// Initialize with default settings
 const api = new WaniKaniAPI('your-api-key');
-// Or use WANIKANI_API_KEY environment variable
-const api = new WaniKaniAPI();
+
+// Or customize cache durations (in seconds)
+const api = new WaniKaniAPI('your-api-key', {
+	cacheTTL: {
+		subjects: 24 * 60 * 60,     // Cache subjects for 24 hours
+		assignments: 60 * 60,       // Cache assignments for 1 hour
+		reviews: 30 * 60,          // Cache reviews for 30 minutes
+		user: 15 * 60,             // Cache user data for 15 minutes
+		default: 60 * 60           // Default TTL for other endpoints
+	}
+});
 
 // Get user information
 const user = await api.user.get();
@@ -60,6 +69,17 @@ The client automatically caches responses based on WaniKani's recommendations:
 - Short-term caching for summary data
 - Conditional requests support for efficient updates
 
+Default cache durations (in seconds):
+- Subjects: 24 hours (86400)
+- Assignments: 1 hour (3600)
+- Reviews: Never cached (0)
+- User data: 1 hour (3600)
+- Study materials: 1 hour (3600)
+- Summary: 1 hour (3600)
+- Other endpoints: 1 hour (3600)
+
+All cache durations can be customized during initialization.
+
 ### Subscription Handling
 
 Automatically respects WaniKani's subscription restrictions:
@@ -75,6 +95,7 @@ Automatically respects WaniKani's subscription restrictions:
 
 For detailed API documentation, see:
 - [WaniKani API Documentation](https://docs.api.wanikani.com/20170710)
+- [API Reference](https://docs.api.wanikani.com/20170710/#introduction)
 
 ## Contributing
 

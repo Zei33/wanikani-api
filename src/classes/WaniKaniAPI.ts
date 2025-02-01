@@ -2,7 +2,7 @@ import "dotenv/config";
 import cachedir from "cachedir";
 import path from "path";
 import fs from "fs/promises";
-import type { PackageJson } from "../types/request.js";
+import type { PackageJson, WaniKaniAPIConfig } from "../types/request.js";
 import { WaniKaniRequest } from "./WaniKaniRequest.js";
 import { UserEndpoint } from "./endpoints/UserEndpoint.js";
 import { AssignmentsEndpoint } from "./endpoints/AssignmentsEndpoint.js";
@@ -38,6 +38,7 @@ export class WaniKaniAPI {
 	private readonly apiRevision = "20170710";
 	private request!: WaniKaniRequest;
 	private readonly initPromise: Promise<void>;
+	private readonly config: WaniKaniAPIConfig;
 
 	/** User-related endpoints 
 	 * @see {@link https://docs.api.wanikani.com/20170710/#user User API Documentation}
@@ -97,27 +98,29 @@ export class WaniKaniAPI {
 	/**
 	 * Creates a new WaniKani API client
 	 * @param {string} [apiKey] - Optional API key (will use WANIKANI_API_KEY environment variable if not provided)
+	 * @param {WaniKaniAPIConfig} [config] - Optional configuration options
 	 * @throws {Error} If no API key is provided or found in environment
 	 */
-	constructor(apiKey?: string) {
+	constructor(apiKey?: string, config: WaniKaniAPIConfig = {}) {
 		const resolvedApiKey = apiKey ?? process.env.WANIKANI_API_KEY;
 		if (typeof resolvedApiKey !== 'string' || resolvedApiKey.length === 0) {
 			throw new Error("WaniKani API key is required, either set the WANIKANI_API_KEY environment variable or pass it as an argument to the constructor.");
 		}
 
 		this.apiKey = resolvedApiKey;
+		this.config = config;
 		this.initPromise = this.initCache().then(() => {
-			this.user = new UserEndpoint(this.request);
-			this.assignments = new AssignmentsEndpoint(this.request);
-			this.subjects = new SubjectsEndpoint(this.request);
-			this.reviews = new ReviewsEndpoint(this.request);
-			this.reviewStatistics = new ReviewStatisticsEndpoint(this.request);
-			this.studyMaterials = new StudyMaterialsEndpoint(this.request);
-			this.resets = new ResetsEndpoint(this.request);
-			this.levelProgressions = new LevelProgressionsEndpoint(this.request);
-			this.spacedRepetitionSystems = new SpacedRepetitionSystemsEndpoint(this.request);
-			this.summary = new SummaryEndpoint(this.request);
-			this.voiceActors = new VoiceActorsEndpoint(this.request);
+			this.user = new UserEndpoint(this.request, this.config.cacheTTL);
+			this.assignments = new AssignmentsEndpoint(this.request, this.config.cacheTTL);
+			this.subjects = new SubjectsEndpoint(this.request, this.config.cacheTTL);
+			this.reviews = new ReviewsEndpoint(this.request, this.config.cacheTTL);
+			this.reviewStatistics = new ReviewStatisticsEndpoint(this.request, this.config.cacheTTL);
+			this.studyMaterials = new StudyMaterialsEndpoint(this.request, this.config.cacheTTL);
+			this.resets = new ResetsEndpoint(this.request, this.config.cacheTTL);
+			this.levelProgressions = new LevelProgressionsEndpoint(this.request, this.config.cacheTTL);
+			this.spacedRepetitionSystems = new SpacedRepetitionSystemsEndpoint(this.request, this.config.cacheTTL);
+			this.summary = new SummaryEndpoint(this.request, this.config.cacheTTL);
+			this.voiceActors = new VoiceActorsEndpoint(this.request, this.config.cacheTTL);
 		});
 	}
 

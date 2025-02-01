@@ -28,7 +28,7 @@ export class ReviewStatisticsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"review_statistics",
 			{},
-			60 * 60, // Cache for 1 hour as they update moderately often
+			"reviewStatistics",
 			options.updatedAfter
 		);
 	}
@@ -48,7 +48,7 @@ export class ReviewStatisticsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`review_statistics/${id}`,
 			{},
-			60 * 60 // Cache for 1 hour
+			"reviewStatistics"
 		);
 	}
 } 

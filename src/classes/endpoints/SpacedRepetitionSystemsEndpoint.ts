@@ -28,7 +28,7 @@ export class SpacedRepetitionSystemsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"spaced_repetition_systems",
 			{},
-			24 * 60 * 60, // Cache for 24 hours as this rarely changes
+			"srs",
 			options.updatedAfter
 		);
 	}
@@ -48,7 +48,7 @@ export class SpacedRepetitionSystemsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`spaced_repetition_systems/${id}`,
 			{},
-			24 * 60 * 60 // Cache for 24 hours
+			"srs"
 		);
 	}
 } 

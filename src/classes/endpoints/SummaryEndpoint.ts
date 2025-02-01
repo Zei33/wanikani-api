@@ -26,7 +26,7 @@ export class SummaryEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"summary",
 			{},
-			60 // Cache for 1 minute as this updates frequently
+			"summary"
 		);
 	}
 } 

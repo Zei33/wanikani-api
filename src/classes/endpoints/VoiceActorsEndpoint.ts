@@ -28,7 +28,7 @@ export class VoiceActorsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"voice_actors",
 			{},
-			24 * 60 * 60, // Cache for 24 hours as voice actors rarely change
+			"voiceActors",
 			options.updatedAfter
 		);
 	}
@@ -47,7 +47,7 @@ export class VoiceActorsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`voice_actors/${id}`,
 			{},
-			24 * 60 * 60 // Cache for 24 hours
+			"voiceActors"
 		);
 	}
 } 

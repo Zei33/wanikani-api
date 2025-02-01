@@ -28,7 +28,7 @@ export class ResetsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"resets",
 			{},
-			24 * 60 * 60, // Cache for 24 hours as resets never change once recorded
+			"resets",
 			options.updatedAfter
 		);
 	}
@@ -48,7 +48,7 @@ export class ResetsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`resets/${id}`,
 			{},
-			24 * 60 * 60 // Cache for 24 hours
+			"resets"
 		);
 	}
 } 

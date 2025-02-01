@@ -27,7 +27,7 @@ export class SubjectsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"subjects",
 			{},
-			24 * 60 * 60, // Cache for 24 hours as subjects rarely change
+			"subjects",
 			options.updatedAfter
 		);
 	}
@@ -46,7 +46,7 @@ export class SubjectsEndpoint extends Endpoint {
 		return await this.makeRequest(
 			`subjects/${id}`,
 			{},
-			24 * 60 * 60 // Cache for 24 hours
+			"subjects"
 		);
 	}
 } 

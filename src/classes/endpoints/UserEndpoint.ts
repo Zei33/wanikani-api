@@ -21,7 +21,7 @@ export class UserEndpoint extends Endpoint {
 		return await this.makeRequest(
 			"user",
 			{},
-			60 * 60 // Cache for 1 hour as user data doesn't change often
+			"user"
 		);
 	}
 
@@ -43,8 +43,7 @@ export class UserEndpoint extends Endpoint {
 			{
 				method: "PUT",
 				body: JSON.stringify(data)
-			},
-			0 // Don't cache PUT requests
+			}
 		);
 	}
 } 
