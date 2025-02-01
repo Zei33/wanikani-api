@@ -33,13 +33,15 @@ jobs:
       run: npm run lint
     
     - name: Run tests with coverage
-      run: npm test -- --coverage
+      run: npm test
       env:
         CI: true
+        JEST_JUNIT_OUTPUT_DIR: ./reports/
+        JEST_JUNIT_OUTPUT_NAME: junit.xml
 
     - name: Generate Badges
       uses: gaelgirodon/ci-badges-action@v1
       with:
-        gist-id: ${{ secrets.GIST_ID }}
+        gist-id: ea274423cad68ec583a39cd12d8f9441
         token: ${{ secrets.GIST_TOKEN }}
         prefix: wanikani-api 
