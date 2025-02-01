@@ -185,23 +185,13 @@ export class WaniKaniAPI {
 		return 'wanikani-api'; // Fallback name
 	}
 
-	/**
-	 * Helper method to check if content should be accessible based on user's subscription level.
-	 * This automatically retrieves the user's subscription data from cache or API.
-	 * 
-	 * @param {number} level - The level of the content to check
-	 * @returns {Promise<boolean>} Promise resolving to whether the content should be accessible
-	 */
 	public async isContentAccessible(level: number): Promise<boolean> {
-		if (!Number.isInteger(level) || level <= 0) {
+		if (level <= 0 || !Number.isInteger(level)) {
 			throw new Error('Level must be a positive integer');
 		}
-		interface UserResponse { data: { data: { subscription: { max_level_granted: number } | null } } }
-		const { data: { data: { subscription } } } = await this.user.get() as UserResponse;
-		if (subscription === null) {
-			return false;
-		}
-		return level <= subscription.max_level_granted;
+		const { subscription } = await this.user.get();
+		if (subscription === null) return false;
+		return subscription.max_level_granted >= level;
 	}
 }
 

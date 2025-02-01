@@ -10,7 +10,9 @@
     "build": "tsc -p .",
     "start": "npm run build && node ./dist/index.js",
     "postinstall": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "test:live": "jest -c jest.live.config.ts",
+    "test:all": "jest -c jest.all.config.ts"
   },
   "imports": {
     "#classes/*": "./dist/classes/*.js"

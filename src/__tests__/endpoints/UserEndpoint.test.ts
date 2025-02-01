@@ -1,6 +1,6 @@
 import { UserEndpoint } from '../../classes/endpoints/UserEndpoint.js';
 import { WaniKaniRequest } from '../../classes/WaniKaniRequest.js';
-import type { ApiResponse, User, Subscription } from '../../types/wanikani.js';
+import type { User } from '../../types/wanikani.js';
 import fs from 'fs/promises';
 
 // Mock fs/promises
@@ -51,23 +51,19 @@ describe('UserEndpoint', () => {
 					max_level_granted: 60,
 					period_ends_at: '2025-01-01T00:00:00.000000Z'
 				},
-				additional_fields: {
-					id: '123',
-					username: 'test_user',
-					level: 5,
-					profile_url: 'https://wanikani.com/users/test_user',
-					started_at: '2020-01-01T00:00:00.000000Z',
-					current_vacation_started_at: null,
-					preferences: {
-						default_voice_actor_id: 1,
-						lessons_batch_size: 5,
-						lessons_autoplay_audio: true,
-						reviews_autoplay_audio: true,
-						lessons_presentation_order: 'ascending_level_then_subject',
-						reviews_presentation_order: 'shuffled',
-						extra_study_autoplay_audio: true
-					}
-				}
+				level: 5,
+				current_vacation_started_at: null,
+				preferences: {
+					default_voice_actor_id: 1,
+					lessons_batch_size: 5,
+					lessons_autoplay_audio: true,
+					reviews_autoplay_audio: true,
+					lessons_presentation_order: 'ascending_level_then_subject',
+					reviews_presentation_order: 'shuffled',
+					extra_study_autoplay_audio: true
+				},
+				created_at: '2020-01-01T00:00:00.000000Z',
+				updated_at: '2020-01-01T00:00:00.000000Z'
 			};
 
 			const mockResponse = {
@@ -121,48 +117,38 @@ describe('UserEndpoint', () => {
 	describe('update', () => {
 		it('should update user preferences', async () => {
 			const preferences = {
-				default_voice_actor_id: 2,
-				lessons_batch_size: 10
-			};
+				default_voice_actor_id: 1,
+				lessons_autoplay_audio: false,
+				lessons_batch_size: 5,
+				lessons_presentation_order: 'ascending_level_then_subject',
+				reviews_autoplay_audio: false,
+				reviews_display_srs_indicator: true
+			} as const;
 
-			const updateData: Partial<User> = {
-				data: {
-					subscription: {
-						active: true,
-						type: 'recurring',
-						max_level_granted: 60,
-						period_ends_at: '2025-01-01T00:00:00.000000Z'
-					},
-					additional_fields: {
-						preferences
-					}
-				}
-			};
-
-			const mockData = {
-				subscription: {
-					active: true,
-					type: 'recurring',
-					max_level_granted: 60,
-					period_ends_at: '2025-01-01T00:00:00.000000Z'
-				},
-				additional_fields: {
-					id: '123',
-					username: 'test_user',
-					preferences: {
-						default_voice_actor_id: preferences.default_voice_actor_id,
-						lessons_batch_size: preferences.lessons_batch_size,
-						lessons_autoplay_audio: true,
-						reviews_autoplay_audio: true
-					}
+			const updateData = {
+				user: {
+					preferences
 				}
 			};
 
 			const mockResponse = {
 				object: 'user',
 				url: 'https://api.wanikani.com/v2/user',
-				data: mockData,
-				additional_data: {}
+				data_updated_at: '2024-01-01T00:00:00.000000Z',
+				data: {
+					id: 'test-user',
+					subscription: {
+						active: true,
+						type: 'recurring' as const,
+						max_level_granted: 60,
+						period_ends_at: '2024-12-31T23:59:59.000000Z'
+					},
+					preferences,
+					level: 1,
+					current_vacation_started_at: null,
+					created_at: '2024-01-01T00:00:00.000000Z',
+					updated_at: '2024-01-01T00:00:00.000000Z'
+				}
 			};
 
 			mockFetch.mockImplementationOnce(async () => ({
@@ -188,7 +174,7 @@ describe('UserEndpoint', () => {
 			);
 
 			// Verify the response was processed correctly
-			expect(result).toEqual(mockData);
+			expect(result).toEqual(mockResponse.data);
 		});
 
 		it('should handle update errors', async () => {
@@ -199,18 +185,15 @@ describe('UserEndpoint', () => {
 				json: async () => ({ error: 'Invalid preferences' })
 			}));
 
-			const invalidData: Partial<User> = {
-				data: {
-					subscription: {
-						active: true,
-						type: 'recurring',
-						max_level_granted: 60,
-						period_ends_at: '2025-01-01T00:00:00.000000Z'
-					},
-					additional_fields: {
-						preferences: {
-							lessons_batch_size: -1
-						}
+			const invalidData = {
+				user: {
+					preferences: {
+						default_voice_actor_id: -1,
+						lessons_autoplay_audio: false,
+						lessons_batch_size: -5,
+						lessons_presentation_order: 'invalid_order',
+						reviews_autoplay_audio: false,
+						reviews_display_srs_indicator: false
 					}
 				}
 			};

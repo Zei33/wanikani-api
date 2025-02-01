@@ -135,13 +135,19 @@ describe('WaniKaniAPI', () => {
 			
 			// Mock user endpoint response
 			const mockUserResponse = {
-				data: {
-					data: {
-						subscription: {
-							max_level_granted: 60
-						}
-					}
-				}
+				object: 'user',
+				url: 'https://api.wanikani.com/v2/user',
+				data_updated_at: '2024-01-01T00:00:00.000000Z',
+				subscription: {
+					active: true,
+					type: 'recurring',
+					max_level_granted: 60,
+					period_ends_at: '2024-12-31T23:59:59.000000Z'
+				},
+				level: 1,
+				current_vacation_started_at: null,
+				created_at: '2024-01-01T00:00:00.000000Z',
+				updated_at: '2024-01-01T00:00:00.000000Z'
 			};
 
 			// @ts-expect-error: Accessing private property for testing
@@ -158,13 +164,19 @@ describe('WaniKaniAPI', () => {
 			
 			// Mock user endpoint response
 			const mockUserResponse = {
-				data: {
-					data: {
-						subscription: {
-							max_level_granted: 3
-						}
-					}
-				}
+				object: 'user',
+				url: 'https://api.wanikani.com/v2/user',
+				data_updated_at: '2024-01-01T00:00:00.000000Z',
+				subscription: {
+					active: true,
+					type: 'recurring',
+					max_level_granted: 3,
+					period_ends_at: '2024-12-31T23:59:59.000000Z'
+				},
+				level: 1,
+				current_vacation_started_at: null,
+				created_at: '2024-01-01T00:00:00.000000Z',
+				updated_at: '2024-01-01T00:00:00.000000Z'
 			};
 
 			// @ts-expect-error: Accessing private property for testing
@@ -190,11 +202,14 @@ describe('WaniKaniAPI', () => {
 			// @ts-expect-error: Accessing private property for testing
 			api.user = {
 				get: jest.fn().mockResolvedValue({
-					data: {
-						data: {
-							subscription: null
-						}
-					}
+					object: 'user',
+					url: 'https://api.wanikani.com/v2/user',
+					data_updated_at: '2024-01-01T00:00:00.000000Z',
+					subscription: null,
+					level: 1,
+					current_vacation_started_at: null,
+					created_at: '2024-01-01T00:00:00.000000Z',
+					updated_at: '2024-01-01T00:00:00.000000Z'
 				})
 			};
 			const result = await api.isContentAccessible(30);

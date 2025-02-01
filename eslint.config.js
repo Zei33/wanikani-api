@@ -5,7 +5,7 @@ export default [
 	{
 		...standard,
 		files: ["**/*.{js,mjs,cjs,ts}"],
-		ignores: ["**/dist/**", "eslint.config.js", "src/__tests__/**"],
+		ignores: ["**/dist/**", "eslint.config.js", "src/__tests__/**", "jest*.ts"],
 		languageOptions: {
 			...standard.languageOptions,
 			parserOptions: {

@@ -1,5 +1,12 @@
-import type { ApiResponse, User } from "../../types/wanikani.js";
+import type { User } from "../../types/wanikani.js";
 import { Endpoint } from "../base/Endpoint.js";
+
+/** User update request format */
+interface UserUpdateRequest {
+	user: {
+		preferences?: User['preferences'];
+	};
+}
 
 /**
  * Handles user-related API endpoints
@@ -9,15 +16,15 @@ import { Endpoint } from "../base/Endpoint.js";
 export class UserEndpoint extends Endpoint {
 	/**
 	 * Gets the user's information
-	 * @returns {Promise<ApiResponse<User>>} Promise resolving to the user data
+	 * @returns {Promise<User>} Promise resolving to the user data
 	 * @see {@link https://docs.api.wanikani.com/20170710/#get-user-information Get User Information API Documentation}
 	 * @example
 	 * ```typescript
 	 * const user = await api.user.get();
-	 * console.log(user.data.subscription.max_level_granted);
+	 * console.log(user.subscription.max_level_granted);
 	 * ```
 	 */
-	public async get(): Promise<ApiResponse<User>> {
+	public async get(): Promise<User> {
 		return await this.makeRequest(
 			"user",
 			{},
@@ -27,17 +34,19 @@ export class UserEndpoint extends Endpoint {
 
 	/**
 	 * Updates the user's information
-	 * @param {Partial<User>} data - The data to update
-	 * @returns {Promise<ApiResponse<User>>} Promise resolving to the updated user data
+	 * @param {UserUpdateRequest} data - The data to update
+	 * @returns {Promise<User>} Promise resolving to the updated user data
 	 * @see {@link https://docs.api.wanikani.com/20170710/#update-user-information Update User Information API Documentation}
 	 * @example
 	 * ```typescript
 	 * const updatedUser = await api.user.update({
-	 *   preferences: { default_voice_actor_id: 1 }
+	 *   user: {
+	 *     preferences: { default_voice_actor_id: 1 }
+	 *   }
 	 * });
 	 * ```
 	 */
-	public async update(data: Partial<User>): Promise<ApiResponse<User>> {
+	public async update(data: UserUpdateRequest): Promise<User> {
 		return await this.makeRequest(
 			"user",
 			{

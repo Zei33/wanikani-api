@@ -1,5 +1,5 @@
 {
-	"include": ["src/**/*", "jest.config.ts"],
+	"include": ["src/**/*", "jest.*.config.ts"],
 	"compilerOptions": {
 		"target": "es2022",
 		"module": "nodenext",
