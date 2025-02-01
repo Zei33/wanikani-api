@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "lint": "eslint . --config eslint.config.js",
-    "fix": "eslint --fix --config eslint.config.js",
+    "lint": "eslint src --config eslint.config.js",
+    "fix": "eslint src --fix --config eslint.config.js",
     "build": "tsc -p .",
     "start": "npm run build && node ./dist/index.js",
     "postinstall": "npm run build",
