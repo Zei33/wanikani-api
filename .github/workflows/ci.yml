@@ -39,12 +39,24 @@ jobs:
         JEST_JUNIT_OUTPUT_DIR: ./reports/
         JEST_JUNIT_OUTPUT_NAME: junit.xml
 
-    - name: Generate Version Badge
+    - name: Update Version and License Badges
       run: |
         VERSION=$(node -p "require('./package.json').version")
         LICENSE=$(node -p "require('./package.json').license")
-        echo '{"schemaVersion":1,"label":"version","message":"'$VERSION'","color":"blue"}' > wanikani-api-version.json
-        echo '{"schemaVersion":1,"label":"license","message":"'$LICENSE'","color":"yellow"}' > wanikani-api-license.json
+        curl -X PATCH \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.GIST_TOKEN }}" \
+          https://api.github.com/gists/ea274423cad68ec583a39cd12d8f9441 \
+          -d '{
+            "files": {
+              "wanikani-api-version.json": {
+                "content": "{\"schemaVersion\":1,\"label\":\"version\",\"message\":\"'$VERSION'\",\"color\":\"blue\"}"
+              },
+              "wanikani-api-license.json": {
+                "content": "{\"schemaVersion\":1,\"label\":\"license\",\"message\":\"'$LICENSE'\",\"color\":\"yellow\"}"
+              }
+            }
+          }'
 
     - name: Generate Badges
       uses: gaelgirodon/ci-badges-action@v1
